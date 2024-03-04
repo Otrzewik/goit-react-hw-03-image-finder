@@ -45,6 +45,15 @@ export class App extends Component {
       this.setState({ isLoading: false });
     }
   };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKey);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKey);
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (
       prevState.currentPage !== this.state.currentPage ||
@@ -63,6 +72,7 @@ export class App extends Component {
       images: [],
     });
   };
+
   handleNextPage = () => {
     this.setState(prevState => {
       if (prevState.currentPage < this.state.totalPages) {
@@ -72,12 +82,19 @@ export class App extends Component {
       }
     });
   };
+
   handleImageClick = imageUrl => {
     this.setState({ selectedImage: imageUrl, show: true });
-    console.log(this.state.selectedImage);
   };
+
   hideModal = () => {
     this.setState({ selectedImage: '', show: false });
+  };
+
+  handleKey = e => {
+    if (e.code === 'Escape') {
+      this.hideModal();
+    }
   };
 
   render() {
